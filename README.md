@@ -104,7 +104,7 @@ The populateBoard function takes as arguments, or already knows the value of, a 
 
 The board will be a two dimensional list that will contain an X character in every position specified by the incoming mineList. All other tiles in the board will be set to the character 0, unless they neighbor a tile with a mine in it. If they do, you will increment the 0 by the number of neighboring mines to that tile, and store that value. For example, if you called the function as populateBoard([1,5],3,4), your function would return [['1', 'X', '2'], ['1', '2', 'X'], ['0', '1', '1'], ['0', '0', '0']].
 
-Note that you will have to design your own algorithm for this function - as in many software specifications, we are only supplying you with the input and output specifications - the rest is up to you. As a hint, you should use all of the functions you wrote so far (blankBoard, getNeighborLabels, verifyNeighbor); use the eval( ) function to convert the strings these functions returned into lists or boolean values as needed. Therefore, you must move your project2.py file into the same directory as the current project, if it is not there already. The template has taken care of pointing your new code to the project2.py file."""
+Note that you will have to design your own algorithm for this function - as in many software specifications, we are only supplying you with the input and output specifications - the rest is up to you. As a hint, you should use all of the functions you wrote so far (blankBoard, getNeighborLabels, verifyNeighbor); use the eval( ) function to convert the strings these functions returned into lists or boolean values as needed. Therefore, you must move your project2.py file into the same directory as the current project, if it is not there already. The template has taken care of pointing your new code to the project2.py file. """
 
 #project 3
 def blankBoard(character,boardWidth,boardHeight):
@@ -147,3 +147,61 @@ def populateBoard (mineList, boardWidth, boardHeight):
 			ctr2+=1
 			me+=1
 	return board
+
+
+"""The displayBoard function takes as arguments, or already knows the value of, a board and a boardWidth. It returns a string representation of the board passed in, which is a two dimensional list.
+
+The function will return the contents of the board in the following format:
+It will have a header that starts with the < character, followed by some number of dashes that will depend on the width of the board, followed by a > sign, and then a newline. The total number of dashes is equal to two times the width plus one, except if the board is of width 1 (we specify the latter below).
+After the header, each row of the board is printed. A row starts with a < character, followed by a space, followed by the contents of the row (each will be one character long), separated by a single space, followed by a space and a closing >, and then a newline.
+Finally, there will be a footer which is identical to the header.
+
+For example, a call to the function with displayBoard([['0','0']],2) will return the string 
+<----->\n< 0 0 >\n<----->
+
+If the width of the board is 1, such as displayBoard([['0']],1) will return the string
+<----->\n< 0 >\n<----->
+
+When you code this function, make sure to add a newline to the result you will return, otherwise it will not pass the test cases. You don't need the newlines at the end of your test cases.
+The collectEmpty function takes as arguments, or already knows the value of, a board, boardWidth, boardHeight, and a move to be made. It uses the move and determines which of its neighbors are empty (i.e. they store the character 0). Of all those neighbors, it keeps repeating this search until there are no more adjacent empty neighbors. Note that we are only looking for adjacent neighbors here, defined for this function as either directly above, below, right, or left of the desired tile (i.e. they must share an edge). This function will not return all empty tiles in the board, but instead is meant to illustrate all the empty tiles returned by clicking the lowest-right tile in the last image above, for example. If the move tile is empty, it also returns that, in addition to the other empty tiles.
+
+The board will be a two dimensional list that will contain either an integer, or the # or X characters. The numbers on the board don't have to make sense in terms of mine placement. Your code will return all tiles with a 0 that are adjacent to the move as described above. For example, if you called the function as collectEmpty([['1','X','2'], ['1','2','X'], ['0','1','1'], ['0','0','0']],3,4,9), your function would return [6, 9, 10, 11]. The list that you return should be sorted in the natural ascending order.
+
+To make things easier, I have modified the getNeighborLabels function from project 2 to have another version that takes a third boolean argument, that will decide whether to return all neighbors (as we did in project 2), or only the neighbors that share an edge (which we will find useful for this function).
+
+This function seems trivial, but it is not. Do not wait until the last minute to start coding. In order to correctly calculate all empty, adjacent neighbors of a tile, you will probably want to keep track of neighbors and tiles that you are comparing by pairing them in lists and storing these lists-of-two in a list for processing.
+
+Note that you will have to design your own algorithm for this function - as in many software specifications, we are only supplying you with the input and output specifications - the rest is up to you. As a hint, you should use the functions you wrote so far (getNeighborLabels, verifyNeighbor)."""
+
+def modifiedGetNeighborLabels(boardWidth,boardHeight,me):
+	lis=[]
+	if me-boardWidth >= 0:
+		lis.append(me-boardWidth)
+	if me+boardWidth < boardHeight*boardWidth:
+		lis.append(me+boardWidth)
+	if me%boardWidth != 0:
+		lis.append(me-1)
+	if me%boardWidth != boardWidth-1:
+		lis.append(me+1)
+	return lis
+def collectEmpty(boardKey,boardWidth,boardHeight,move):
+	empties=[]
+	dict={}
+	ctr = 0
+	y=[]
+	for i in boardKey:
+		for j in i:
+			dict[ctr]=j
+			ctr+=1
+	x=modifiedGetNeighborLabels(boardWidth,boardHeight,move)
+	for i in x:
+		if dict[i]=='0' and i not in empties:
+			empties.append(i)
+			y=modifiedGetNeighborLabels(boardWidth,boardHeight,i)
+		for j in y:
+			if dict[j]=='0' and j not in empties:
+				x.append(j)
+	return sorted(list(set(empties)))
+	
+	#YOUR CODE GOES HERE
+	#remember to indent all code inside this function
