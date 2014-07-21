@@ -98,3 +98,53 @@ def verifyNeighbor (boardWidth, boardHeight, neighbor, me):
 	else:
 		return False
 	#remember to indent all code inside this function
+
+"""The blankBoard function takes as arguments, or already knows the value of, a character, boardWidth and a boardHeight. It creates a board of the specified size, as a two dimensional list, and fills it with the character specified. For example, if you called the function as blankBoard('X',3,2), your function would return [['X', 'X', 'X'], ['X', 'X', 'X']]. If you called it with blankBoard('1',1,2), it would return [['1'], ['1']].
+The populateBoard function takes as arguments, or already knows the value of, a mineList, boardWidth and a boardHeight. It creates a board of the specified size, as a two dimensional list, and fills it with the proper values.
+
+The board will be a two dimensional list that will contain an X character in every position specified by the incoming mineList. All other tiles in the board will be set to the character 0, unless they neighbor a tile with a mine in it. If they do, you will increment the 0 by the number of neighboring mines to that tile, and store that value. For example, if you called the function as populateBoard([1,5],3,4), your function would return [['1', 'X', '2'], ['1', '2', 'X'], ['0', '1', '1'], ['0', '0', '0']].
+
+Note that you will have to design your own algorithm for this function - as in many software specifications, we are only supplying you with the input and output specifications - the rest is up to you. As a hint, you should use all of the functions you wrote so far (blankBoard, getNeighborLabels, verifyNeighbor); use the eval( ) function to convert the strings these functions returned into lists or boolean values as needed. Therefore, you must move your project2.py file into the same directory as the current project, if it is not there already. The template has taken care of pointing your new code to the project2.py file."""
+
+#project 3
+def blankBoard(character,boardWidth,boardHeight):
+	board = []
+	ctr=0
+	while ctr < boardHeight:
+		board.append([])
+		ctr+=1
+	for i in board:
+		ctr2=0
+		while ctr2<boardWidth:
+			i.append(str(character))
+			ctr2+=1
+	
+	#YOUR CODE GOES HERE
+	#remember to indent all code inside this function
+	
+	return board
+
+#project 3
+
+def populateBoard (mineList, boardWidth, boardHeight):
+	board = []
+	ctr=0
+	me=0
+	while ctr < boardHeight:
+		board.append([])
+		ctr+=1
+	for i in board:
+		ctr2=0
+		while ctr2<boardWidth:
+			ctr3=0
+			for j in mineList:
+				x = verifyNeighbor(boardWidth, boardHeight, j, me)
+				if x == True:
+					ctr3+=1
+			if me not in mineList:
+				i.append(str(ctr3))
+			else:
+				i.append('X')
+			ctr2+=1
+			me+=1
+	return board
