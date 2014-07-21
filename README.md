@@ -125,7 +125,6 @@ def blankBoard(character,boardWidth,boardHeight):
 	return board
 
 #project 3
-
 def populateBoard (mineList, boardWidth, boardHeight):
 	board = []
 	ctr=0
